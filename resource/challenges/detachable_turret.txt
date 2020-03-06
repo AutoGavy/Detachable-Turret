@@ -1,0 +1,11 @@
+"CHALLENGE"
+{
+	"name"	"Detachable Turret"
+	"description"	"Equip a railgun in slot1 to use turret."
+
+	"convars"
+	{
+		"rd_override_allow_rotate_camera"	"1"
+		"asw_marine_death_cam_slowdown"		"0"
+	}
+}
