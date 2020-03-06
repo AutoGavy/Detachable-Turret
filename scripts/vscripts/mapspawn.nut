@@ -391,7 +391,7 @@ function SetVanTurretThinkFunc()
 			self.Destroy();
 	}
 	else
-		return 50000;
+		return 5000;
 	
 	local hMarine = null;
 	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
@@ -437,7 +437,7 @@ function SetFlameTurretThinkFunc()
 			self.Destroy();
 	}
 	else
-		return 50000;
+		return 5000;
 	
 	local hMarine = null;
 	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
@@ -483,7 +483,7 @@ function SetIceTurretThinkFunc()
 			self.Destroy();
 	}
 	else
-		return 50000;
+		return 5000;
 	
 	local hMarine = null;
 	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
@@ -529,7 +529,7 @@ function SetCannonTurretThinkFunc()
 			self.Destroy();
 	}
 	else
-		return 50000;
+		return 5000;
 	
 	local hMarine = null;
 	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
@@ -571,10 +571,17 @@ function GrenadeMoveForward()
 {
 	if (iCount > 0.9)
 	{
-		local hExplosion = Entities.CreateByClassname("asw_env_explosion");
-		hExplosion.__KeyValueFromInt("iDamage", 100);
+		local hExplosion = Entities.CreateByClassname("env_explosion");
+		hExplosion.__KeyValueFromInt("iMagnitude", 100);
 		hExplosion.__KeyValueFromInt("iRadiusOverride", 128);
+		hExplosion.__KeyValueFromInt("spawnflags", 1618);
 		hExplosion.SetOrigin(self.GetOrigin());
+		local hExplosionFX = Entities.CreateByClassname("info_particle_system");
+		hExplosionFX.__KeyValueFromString("effect_name", "explosion_grenade");
+		hExplosionFX.__KeyValueFromString("start_active", "1");
+		hExplosionFX.SetOrigin(self.GetOrigin());
+		hExplosionFX.Spawn();
+		hExplosionFX.Activate();
 		DoEntFire("!self", "Explode", "", 0, null, hExplosion);
 		self.EmitSound("ASWGrenade.Explode");
 		self.Destroy();
