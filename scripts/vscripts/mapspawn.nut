@@ -60,9 +60,12 @@ function OnTakeDamage_Alive_Any(hVictim, hInflictor, hAttacker, hWeapon, flDamag
 	{
 		if (hWeapon != null)
 		{
-			if (CheckWeaponName(hWeapon, "gs_tvan") && hAttacker.GetMarineName() == "Wolfe" || hAttacker.GetMarineName() == "Wildcat")
-				flDamage -= 5;
-			flDamage *= 3.7;
+			if (CheckWeaponName(hWeapon, "gs_tvan"))
+			{
+				if (hAttacker.GetMarineName() == "Wolfe" || hAttacker.GetMarineName() == "Wildcat")
+					flDamage -= 5;
+				flDamage *= 3.7;
+			}
 		}
 		else if (hInflictor != null && hInflictor.GetClassname() == "asw_extinguisher_projectile")
 		{
