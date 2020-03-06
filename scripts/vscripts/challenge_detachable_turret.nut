@@ -18,7 +18,6 @@ class cMarine
 	
 	m_hMarine = null;
 	m_strName = null;
-	m_hTarget = null;
 	m_hProp = null;
 }
 
@@ -60,14 +59,12 @@ function OnGameplayStart()
 				cTarget.m_hProp.SetOwner(hWeapon);
 				cTarget.m_hProp.Spawn();
 				
-				cTarget.m_hTarget = Entities.CreateByClassname("info_target");
-				cTarget.m_hTarget.SetOwner(cTarget.m_hProp);
-				cTarget.m_hTarget.ValidateScriptScope();
-				cTarget.m_hTarget.GetScriptScope().MarineManager<-MarineManager;
-				cTarget.m_hTarget.GetScriptScope().GetMarineIndex<-GetMarineIndex;
-				cTarget.m_hTarget.GetScriptScope().RotateTurret<-RotateTurret;
-				cTarget.m_hTarget.GetScriptScope().SetTurretThinkFunc<-SetTurretThinkFunc;
-				AddThinkToEnt(cTarget.m_hTarget, "SetTurretThinkFunc");
+				cTarget.m_hProp.ValidateScriptScope();
+				cTarget.m_hProp.GetScriptScope().MarineManager<-MarineManager;
+				cTarget.m_hProp.GetScriptScope().GetMarineIndex<-GetMarineIndex;
+				cTarget.m_hProp.GetScriptScope().RotateTurret<-RotateTurret;
+				cTarget.m_hProp.GetScriptScope().SetTurretThinkFunc<-SetTurretThinkFunc;
+				AddThinkToEnt(cTarget.m_hProp, "SetTurretThinkFunc");
 			}
 		}
 	}
@@ -115,13 +112,14 @@ function OnGameEvent_player_dropped_weapon(params)
 
 function SetTurretThinkFunc()
 {
+	if (!self || !self.IsValid())
+		self.Destroy();
+	
 	local hMarine = null;
 	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
 	{
 		local cTarget = MarineManager[GetMarineIndex(hMarine)];
 		local hWeapon = NetProps.GetPropEntity(hMarine, "m_hActiveWeapon");
-		if (!cTarget.m_hProp)
-			self.Destroy();
 		
 		if (hWeapon != null && hWeapon.GetKeyValue("rendermode").tointeger() && cTarget.m_hProp)
 		{
@@ -155,18 +153,13 @@ function Startup()
 function CheckTurret(hMarine)
 {
 	local cTarget = MarineManager[GetMarineIndex(hMarine)];
-	if (!cTarget.m_hTarget || !cTarget.m_hProp)
-		return;
-	if (cTarget.m_hTarget.tostring().slice(0, 2) != "(i" && cTarget.m_hTarget)
-	{
-		cTarget.m_hTarget.Destroy();
-		cTarget.m_hTarget = null;
-	}
 	if (cTarget.m_hProp)
 	{
 		cTarget.m_hProp.Destroy();
 		cTarget.m_hProp = null;
 	}
+	else
+		return;
 		
 	local hTurret = null;
 	while ((hTurret = Entities.FindByClassname(hTurret, "asw_weapon_autogun")) != null)
