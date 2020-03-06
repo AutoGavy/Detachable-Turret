@@ -16,7 +16,7 @@ We know that sentry turrets can be detached in Halo series. So why RD can't?
 
   Once it drops to the ground, it will automatically turns into an unpickable static sentrygun
 
-- If you enable this plugin, Steam Achievements and RD Leaderboard will disable
+- If you enable this plugin, Steam Achievements and RD Leaderboard will be disabled
 - Cannot work with "TickRate Doors\Lifts Fix" addon (using the same file)
 
   Plugin only works for server or room host
