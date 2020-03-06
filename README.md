@@ -1,4 +1,4 @@
-# Detachable Turrets Server Plugin for Alien Swarm Reactive Drop
+# Detachable Turrets Plugin for Alien Swarm Reactive Drop
 We know that sentry turrets can be detached in Halo series. So why RD can't?
 
 
@@ -16,7 +16,7 @@ We know that sentry turrets can be detached in Halo series. So why RD can't?
 
   Once it drops to the ground, it will automatically turns into an unpickable static sentrygun
 
-
+- If you enable this plugin, Steam Achievements and RD Leaderboard will disable
 - Cannot work with "TickRate Doors\Lifts Fix" addon (using the same file)
 
   Plugin only works for server or room host
