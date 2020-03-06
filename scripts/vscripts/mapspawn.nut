@@ -198,14 +198,29 @@ function OnGameEvent_item_pickup(params)
 {
 	local hMarine = NetProps.GetPropEntity(GetPlayerFromUserID(params["userid"]), "m_hMarine")
 	if (hMarine)
-		CheckTurret(hMarine);
+	{
+		local TableInv = hMarine.GetInvTable();
+		if (!("slot0" in TableInv) || TableInv["slot0"] == null)
+			CheckTurret(hMarine);
+	}
 }
 
 function OnGameEvent_player_dropped_weapon(params)
 {
 	local hMarine = NetProps.GetPropEntity(GetPlayerFromUserID(params["userid"]), "m_hMarine")
 	if (hMarine)
-		CheckTurret(hMarine);
+	{
+		local TableInv = hMarine.GetInvTable();
+		if (!("slot0" in TableInv) || TableInv["slot0"] == null)
+			CheckTurret(hMarine);
+	}
+}
+
+function Startup()
+{
+	local hMarine = null;
+	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
+		MarineManager.push(cMarine(hMarine));
 }
 
 function Startup()
@@ -592,7 +607,7 @@ function GrenadeMoveForward()
 
 function CheckWeaponName(hWeapon, strName)
 {
-	if (hWeapon.GetName().len() > 6)
+	if (hWeapon.GetName().len() > 7)
 	{
 		if (hWeapon.GetName().slice(0, 7) == strName)
 			return true;
@@ -603,16 +618,16 @@ function CheckWeaponName(hWeapon, strName)
 function CheckTurret(hMarine)
 {
 	local cTarget = MarineManager[GetMarineIndex(hMarine)];
-	if (cTarget.m_hProp.tostring().slice(0, 2) != "(i")
+	if (cTarget.m_hProp)
 	{
-		if (cTarget.m_hProp)
+		if (cTarget.m_hProp.tostring().len() > 2 && cTarget.m_hProp.tostring().slice(0, 2) != "(i")
 		{
 			cTarget.m_hProp.Destroy();
 			cTarget.m_hProp = null;
 		}
-		else
-			return;
 	}
+	else
+		return;
 		
 	local hVanTurret = null;
 	while ((hVanTurret = Entities.FindByClassname(hVanTurret, "asw_weapon_autogun")) != null)
