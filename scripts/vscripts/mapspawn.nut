@@ -131,7 +131,7 @@ function OnGameEvent_weapon_fire(params)
 				{
 					hWeapon.SetClip1(250);
 					g_bFreezerFirstOut = false;
-				}			
+				}
 				break;
 			case "gs_tcan":
 				hWeapon.EmitSound("ASW_Sentry.CannonFire");
@@ -219,6 +219,16 @@ function OnGameEvent_player_dropped_weapon(params)
 		local TableInv = hMarine.GetInvTable();
 		if (!("slot0" in TableInv) || TableInv["slot0"] == null)
 			CheckTurret(hMarine);
+	}
+}
+
+function OnGameEvent_player_fullyjoined(params)
+{
+	local player = null;
+	while ((player = Entities.FindByClassname(player, "player")) != null)
+	{
+		if (player.GetPlayerUserID() == params["userid"])
+			ClientPrint(player, 3, "Welcome! Detachable Turrets Plugin is enabled on this server.");
 	}
 }
 
