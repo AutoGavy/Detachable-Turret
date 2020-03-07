@@ -1,3 +1,4 @@
+g_bFreezerFirstOut <- true;
 MarineManager <- [];
 
 class cMarine
@@ -63,8 +64,11 @@ function OnTakeDamage_Alive_Any(hVictim, hInflictor, hAttacker, hWeapon, flDamag
 			if (CheckWeaponName(hWeapon, "gs_tvan"))
 			{
 				if (hAttacker.GetMarineName() == "Wolfe" || hAttacker.GetMarineName() == "Wildcat")
-					flDamage -= 5;
-				flDamage *= 3.7;
+				{
+					if (flDamage - 5 > 1)
+						flDamage -= 5;
+				}
+				flDamage *= 2.2;
 			}
 		}
 		else if (hInflictor != null && hInflictor.GetClassname() == "asw_extinguisher_projectile")
@@ -97,9 +101,6 @@ function OnGameEvent_weapon_reload_finish(params)
 			case "gs_tflm":
 				hWeapon.SetClip1(150);
 				break;
-			case "gs_tice":
-				hWeapon.SetClip1(250);
-				break;
 			case "gs_tcan":
 				hWeapon.SetClip1(15);
 				break;
@@ -126,6 +127,11 @@ function OnGameEvent_weapon_fire(params)
 				DoEntFire("!self", "Kill", "", 0.1, null, hIceFX);
 				hIceFX.Spawn();
 				hIceFX.Activate();
+				if (g_bFreezerFirstOut && hWeapon.Clip1() < 2)
+				{
+					hWeapon.SetClip1(250);
+					g_bFreezerFirstOut = false;
+				}			
 				break;
 			case "gs_tcan":
 				hWeapon.EmitSound("ASW_Sentry.CannonFire");
@@ -223,13 +229,6 @@ function Startup()
 		MarineManager.push(cMarine(hMarine));
 }
 
-function Startup()
-{
-	local hMarine = null;
-	while ((hMarine = Entities.FindByClassname(hMarine, "asw_marine")) != null)
-		MarineManager.push(cMarine(hMarine));
-}
-
 function GiveTurretWeapon(hMarine, strWeaponName)
 {
 	switch(strWeaponName)
@@ -261,7 +260,7 @@ function GiveVanillaTurret(hMarine)
 		{
 			local cTarget = MarineManager[GetMarineIndex(hMarine)];
 			hWeapon.SetName("gs_tvan" + cTarget.m_strName);
-			hWeapon.SetClips(2);
+			hWeapon.SetClips(1);
 			hWeapon.__KeyValueFromInt("renderamt", 0);
 			hWeapon.__KeyValueFromInt("rendermode", 1);
 			hWeapon.__KeyValueFromString("disableshadows", "1");
@@ -336,7 +335,6 @@ function GiveIceTurret(hMarine)
 			local cTarget = MarineManager[GetMarineIndex(hMarine)];
 			hWeapon.SetName("gs_tice" + cTarget.m_strName);
 			hWeapon.SetClip1(250);
-			hWeapon.SetClips(3);
 			hWeapon.__KeyValueFromInt("renderamt", 0);
 			hWeapon.__KeyValueFromInt("rendermode", 1);
 			hWeapon.__KeyValueFromString("disableshadows", "1");
