@@ -180,6 +180,13 @@ function OnGameEvent_weapon_fire(params)
 	}
 }
 
+function OnGameEvent_player_fullyjoined(params)
+{
+	local player = GetPlayerFromUserID(params["userid"]);
+	if (player != null)
+		ClientPrint(player, 3, "Welcome! Detachable Turrets Plugin is enabled on this server.");
+}
+
 function OnGameEvent_entity_killed(params)
 {
 	local hVictim = EntIndexToHScript(params["entindex_killed"]);
@@ -219,16 +226,6 @@ function OnGameEvent_player_dropped_weapon(params)
 		local TableInv = hMarine.GetInvTable();
 		if (!("slot0" in TableInv) || TableInv["slot0"] == null)
 			CheckTurret(hMarine);
-	}
-}
-
-function OnGameEvent_player_fullyjoined(params)
-{
-	local player = null;
-	while ((player = Entities.FindByClassname(player, "player")) != null)
-	{
-		if (player.GetPlayerUserID() == params["userid"])
-			ClientPrint(player, 3, "Welcome! Detachable Turrets Plugin is enabled on this server.");
 	}
 }
 
