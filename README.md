@@ -14,7 +14,7 @@ We know that sentry turrets can be detached in Halo series. So why RD can't?
 
   *Then equip any sentrygun in your first slot, you will get a detached turret! <<<<
 
-  Once it drops to the ground, it will automatically turns into an unpickable static sentrygun
+  Once drops to the ground, it will automatically turns into a static unpickable sentrygun
 
 - If you enable this plugin, Steam Achievements and RD Leaderboard will be disabled
 - Turret damage will not be affected by skill bonus
