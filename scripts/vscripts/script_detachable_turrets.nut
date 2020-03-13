@@ -89,7 +89,14 @@ function OnTakeDamage_Alive_Any(hVictim, hInflictor, hAttacker, hWeapon, flDamag
 	}
 	return flDamage;
 }
-	
+
+function OnGameEvent_player_fullyjoined(params)
+{
+	local player = GetPlayerFromUserID(params["userid"]);
+	if (player != null)
+		ClientPrint(player, 3, "Welcome! Detachable Turrets Plugin is enabled on this server.");
+}
+
 function OnGameEvent_weapon_reload_finish(params)
 {
 	local hMarine = EntIndexToHScript(params["marine"]);
@@ -99,7 +106,7 @@ function OnGameEvent_weapon_reload_finish(params)
 		switch (hWeapon.GetName().slice(0, 7))
 		{
 			case "gs_tflm":
-				hWeapon.SetClip1(150);
+				hWeapon.SetClip1(50);
 				break;
 			case "gs_tcan":
 				hWeapon.SetClip1(15);
@@ -178,13 +185,6 @@ function OnGameEvent_weapon_fire(params)
 				break;
 		}
 	}
-}
-
-function OnGameEvent_player_fullyjoined(params)
-{
-	local player = GetPlayerFromUserID(params["userid"]);
-	if (player != null)
-		ClientPrint(player, 3, "Welcome! Detachable Turrets Plugin is enabled on this server.");
 }
 
 function OnGameEvent_entity_killed(params)
@@ -304,7 +304,7 @@ function GiveFlameTurret(hMarine)
 		{
 			local cTarget = MarineManager[GetMarineIndex(hMarine)];
 			hWeapon.SetName("gs_tflm" + cTarget.m_strName);
-			hWeapon.SetClip1(150);
+			hWeapon.SetClip1(50);
 			hWeapon.__KeyValueFromInt("renderamt", 0);
 			hWeapon.__KeyValueFromInt("rendermode", 1);
 			hWeapon.__KeyValueFromString("disableshadows", "1");
